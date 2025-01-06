@@ -43,3 +43,5 @@ train.csv
 test.csv
 input.txt
 input_full.txt
+encode_list.txt
+test.txt
