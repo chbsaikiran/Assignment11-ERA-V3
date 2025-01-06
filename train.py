@@ -31,6 +31,7 @@ for i in range(num_merges):
     idx = 256 + i
     ids = merge(ids, pair, idx)
     merges[pair] = idx
+    print(i)
 
 # Convert tuple keys to strings for merges
 merges_str_keys = {str(key): value for key, value in merges.items()}
