@@ -5,7 +5,7 @@ from funcs import get_stats, merge
 # Define the regex pattern for pre-tokenization
 gpt2pat = re.compile(r"""'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+""")
 
-vocab_size = 5000  # The desired final vocabulary size
+vocab_size = 4096  # The desired final vocabulary size
 num_merges = vocab_size - 256
 
 # Read input text
