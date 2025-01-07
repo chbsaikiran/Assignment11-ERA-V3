@@ -20,12 +20,30 @@ def utf8_encode_text(input_text):
     token_count = len(tokens)
     return f"Tokens: {token_list}\n\nNumber of tokens: {token_count}"
 
+def utf8_encode_text_ret_len(input_text):
+    tokens = input_text.encode("utf-8")
+    return len(tokens)  # Return token count only
+
 # Define BPE encode function with token count
 def encode_text(input_text):
+    # Compute utf-8 token length
+    utf8_token_length = utf8_encode_text_ret_len(input_text)
+
+    # Perform BPE encoding
     tokens = encode(input_text, merges)
     token_list = " ".join(map(str, tokens))
-    token_count = len(tokens)
-    return f"Tokens: {token_list}\n\nNumber of tokens: {token_count}"
+    token_texts = [vocab[token].decode('utf-8', errors='ignore') for token in tokens]
+    token_text_mapping = "\n".join(f"Token {token}: '{text}'" for token, text in zip(tokens, token_texts))
+    bpe_token_length = len(tokens)
+
+    # Compute compression ratio
+    compression_ratio = (utf8_token_length*0.6667) / bpe_token_length if bpe_token_length != 0 else float('inf')
+
+    return (f"Tokens: {token_list}\n\n"
+            f"Token to Text Mapping:\n{token_text_mapping}\n\n"
+            f"Number of utf-8 tokens: {utf8_token_length}\n"
+            f"Number of BPE tokens: {bpe_token_length}\n"
+            f"Compression Ratio: {compression_ratio:.2f}")
 
 # Define decode function
 def decode_text(encoded_text):
@@ -35,7 +53,7 @@ def decode_text(encoded_text):
 
 # Gradio interface
 with gr.Blocks() as demo:
-    gr.Markdown("## Hindi Text Encoder and Decoder")
+    gr.Markdown("## हिंदी टेक्स्ट एनकोडर और डिकोडर (Hindi Text Encoder and Decoder) With Vocabalary Size: 4096 (12 bits)")
     
     with gr.Row():
         with gr.Column():

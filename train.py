@@ -3,7 +3,13 @@ import regex as re
 from funcs import get_stats, merge
 
 # Define the regex pattern for pre-tokenization
-gpt2pat = re.compile(r"""'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+""")
+hindi_regex = re.compile(r"""
+    \p{Devanagari}+        # Match Hindi words (Devanagari script)
+    | \p{N}+               # Match numbers (e.g., 123, १२३)
+    | [^\s\p{Devanagari}\p{N}]+  # Match punctuation, symbols, or non-Devanagari characters
+    | \s+(?!\S)            # Match trailing spaces
+    | \s+                  # Match other whitespace
+""", re.VERBOSE)
 
 vocab_size = 4096  # The desired final vocabulary size
 num_merges = vocab_size - 256
@@ -13,13 +19,15 @@ with open('input.txt', 'r', encoding='utf-8') as f:
     text = f.read()
 
 # Pre-tokenize using regex
-tokens = re.findall(gpt2pat, text)
+tokens = re.findall(hindi_regex, text)
 
 # Convert tokens to byte-level representation
 byte_tokens = [token.encode("utf-8") for token in tokens]
 
 # Flatten the byte tokens into a single list of integers
 ids = [b for token in byte_tokens for b in token]
+
+print(tokens[:20])
 
 # Initialize merges
 merges = {}  # (int, int) -> int
