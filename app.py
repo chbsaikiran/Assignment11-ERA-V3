@@ -43,6 +43,7 @@ def encode_text(input_text):
             f"Token to Text Mapping:\n{token_text_mapping}\n\n"
             f"Number of utf-8 tokens: {utf8_token_length}\n"
             f"Number of BPE tokens: {bpe_token_length}\n"
+            f"Compression Ratio Formula: ((No. of utf-8 tokens)*8bits)/((No. of BPE tokens)*12bits)\n"
             f"Compression Ratio: {compression_ratio:.2f}")
 
 # Define decode function
@@ -53,7 +54,7 @@ def decode_text(encoded_text):
 
 # Gradio interface
 with gr.Blocks() as demo:
-    gr.Markdown("## हिंदी टेक्स्ट एनकोडर और डिकोडर (Hindi Text Encoder and Decoder) With Vocabalary Size: 4096 (12 bits)")
+    gr.Markdown("## हिंदी टेक्स्ट एनकोडर और डिकोडर (Hindi Text Encoder and Decoder) With Vocabalary Size: 4096 (12 bits per Token)")
     
     with gr.Row():
         with gr.Column():
